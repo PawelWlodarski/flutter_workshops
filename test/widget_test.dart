@@ -1,31 +1,38 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:flutter_workshops/main.dart';
 import 'package:flutter_workshops/poligon/cards_app.dart';
 
 void main() {
+  _buildPanel(ItemsStore store) => MaterialApp(
+          home: Scaffold(
+        body: CardsPanel(store),
+      ));
+
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(CardsApp());
+    await tester.pumpWidget(_buildPanel(_ItemsStoreMock()));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    expect(find.text('title1'), findsOneWidget);
+    expect(find.text('content1'), findsNothing);
+    expect(find.text('content4'), findsOneWidget);
+//
+    await tester.tap(find.byKey(Key("card1")));
     await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+//
+    expect(find.text('content1'), findsOneWidget);
   });
+
+}
+
+class _ItemsStoreMock implements ItemsStore{
+  @override
+  Iterable<MyItem> items()  => [
+    MyItem(1,"title1","content1"),
+    MyItem(2,"title2","content2"),
+    MyItem(3,"title3","content3"),
+    MyItem(4,"title4","content4"),
+  ];
+
+
+
 }

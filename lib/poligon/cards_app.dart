@@ -15,7 +15,7 @@ class CardsPage extends StatelessWidget {
         appBar: AppBar(
           title: Text("KARTY"),
         ),
-        body: CardsPanel(ItemsStore()),
+        body: CardsPanel(LocalItemsStore()),
       );
 }
 
@@ -29,18 +29,19 @@ class CardsPanel extends StatefulWidget {
 }
 
 class _CardsPanelState extends State<CardsPanel> {
-  List<Widget> _buildCards() => widget._store.items
+
+  _itemBusinessFilter(MyItem item) => item.id % 4 == 0;
+
+  List<Widget> _buildCards() => widget._store
+      .items()
       .map((item) => ExpansionTile(
-            title:
-                Text(item.title, style: TextStyle(fontWeight: FontWeight.bold)),
+            key: Key("card${item.id}"),
+            initiallyExpanded: _itemBusinessFilter(item),
+            leading: Icon(Icons.arrow_downward),
+            title: Text(item.title, style: TextStyle(fontWeight: FontWeight.bold)),
             children: <Widget>[
               Text(item.content),
-              Container(
-                  alignment: Alignment.centerRight,
-                  child: IconButton(
-                    icon: Icon(Icons.link),
-                    onPressed: () {},
-                  ))
+              Container(alignment: Alignment.centerRight, child: IconButton(icon: Icon(Icons.link), onPressed: () {}))
             ],
           ))
       .toList();
@@ -51,14 +52,19 @@ class _CardsPanelState extends State<CardsPanel> {
       );
 }
 
-class ItemsStore {
-  final items = Iterable<int>.generate(10)
-      .map((i) => _MyItem("item$i", List.filled(5, "lorem ipsum $i ").join()));
+abstract class ItemsStore {
+  Iterable<MyItem> items();
 }
 
-class _MyItem {
+class LocalItemsStore implements ItemsStore {
+  Iterable<MyItem> items()  =>
+      Iterable<int>.generate(10).map((i) => MyItem(i,"item$i", List.filled(5, "lorem ipsum $i ").join()));
+}
+
+class MyItem {
+  final int id;
   final String title;
   final String content;
 
-  _MyItem(this.title, this.content);
+  MyItem(this.id,this.title, this.content);
 }
