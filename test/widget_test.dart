@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_workshops/poligon/cards_app.dart';
+import 'package:flutter_workshops/poligon/items.dart';
 
 void main() {
   _buildPanel(ItemsStore store) => MaterialApp(

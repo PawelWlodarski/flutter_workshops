@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_workshops/poligon/item_details.dart';
+import 'package:flutter_workshops/poligon/items.dart';
 
 class CardsApp extends StatelessWidget {
   @override
@@ -67,7 +69,7 @@ class _ItemTileState extends State<ItemTile> {
   Widget build(BuildContext context) => ExpansionTile(
     initiallyExpanded: widget._isExpanded,
     leading: _itemIcon(),
-    onExpansionChanged: (isExpanding){
+    onExpansionChanged: (isExpanding){ //TODO extract method
         setState((){this._isExpanded = isExpanding;});
     },
     title: Text(widget._item.title, style: TextStyle(fontWeight: FontWeight.bold)),
@@ -77,26 +79,11 @@ class _ItemTileState extends State<ItemTile> {
           alignment: Alignment.centerRight,
           child: IconButton(
             icon: Icon(Icons.link),
-            onPressed: () {},
+            onPressed: () { //TODO extract method
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (ctx) => ItemDetails(widget._item)));
+            },
           ))
     ],
   );
-}
-
-
-abstract class ItemsStore {
-  Iterable<MyItem> items();
-}
-
-class LocalItemsStore implements ItemsStore {
-  Iterable<MyItem> items() =>
-      Iterable<int>.generate(10).map((i) => MyItem(i, "item$i", List.filled(5, "lorem ipsum $i ").join()));
-}
-
-class MyItem {
-  final int id;
-  final String title;
-  final String content;
-
-  MyItem(this.id, this.title, this.content);
 }
