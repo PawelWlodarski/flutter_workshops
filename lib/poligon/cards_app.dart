@@ -33,7 +33,7 @@ class _CardsPanelState extends State<CardsPanel> {
 
   List<Widget> _buildCards() => widget._store.items().map((item) {
         final isExpanded = _itemBusinessFilter(item);
-        return _ItemTile(item,isExpanded);
+        return ItemTile(item,isExpanded);
       }).toList();
 
   @override
@@ -42,18 +42,18 @@ class _CardsPanelState extends State<CardsPanel> {
       );
 }
 
-class _ItemTile extends StatefulWidget{
+class ItemTile extends StatefulWidget{
 
   final MyItem _item;
   final bool _isExpanded;
 
-  _ItemTile(this._item, this._isExpanded) : super();
+  ItemTile(this._item, this._isExpanded) : super();
 
   @override
   _ItemTileState createState() => _ItemTileState(_isExpanded);
 }
 
-class _ItemTileState extends State<_ItemTile> {
+class _ItemTileState extends State<ItemTile> {
 
   bool _isExpanded;
 
